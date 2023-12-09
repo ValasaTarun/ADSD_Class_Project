@@ -29,13 +29,19 @@ for item in professors_list:
     cursor.execute(query)
 
 
-courses_list = [ ['ADSD' , 2, 'CS 63005','Advanced Database Systems Design'] ,['ADSD' ,3,  'CS 63005','Advanced Database Systems Design'] , ['ADD' ,4, 'CS 53305','Advanced Digital Design'] , ['IS' ,6, 'CS 57205','Information Security'] , ['DAA' ,5, 'CS 56101','Design and Analysis of Algorithms'] ]
+courses_list = [ ['ADSD' , 2, 'CS 63005','Advanced Database Systems Design'] ,['ADSD' ,3,  'CS 63006','Advanced Database Systems Design'] , ['ADD' ,4, 'CS 53305','Advanced Digital Design'] , ['IS' ,6, 'CS 57205','Information Security'] , ['DAA' ,5, 'CS 56101','Design and Analysis of Algorithms'] ]
 
 for item in courses_list:
     query = f"insert into Courses ('Name','Taught_by','Code','Information') values ('{item[0]}' , {item[1]} , '{item[2]}' ,'{item[3]}')"
     print(query)
     cursor.execute(query)
 
+
+students_list = [['John Doe' , 1] , ['Jane Doe' , 2] , ['Robert Jane' , 2] , ['Mike Hector' , 1] , ['Bear Ross',3] , ['Vincent Jacobs',4] , ['Branson Solis',5]]
+for item in students_list:
+    query = f"insert into Students ('Name','Course_Enrolled') values ('{item[0]}' , {item[1]})"
+    print(query)
+    cursor.execute(query)
 
 connection.commit()
 connection.close()

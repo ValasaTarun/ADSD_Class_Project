@@ -6,7 +6,11 @@
     <title>Courses List</title>
 </head>
 <body>
+ 
     <h2> Courses </h2>
+     <hr>
+    <button><a href="/courses/add">Add</a></button>
+    <hr/>
     <hr/>
     <table>
       <thead>
@@ -27,8 +31,8 @@
         <td>{{str(item['Class Timings'])}}</td>
         <td>{{str(item['Code'])}}</td>
         <td>{{str(item['Information'])}}</td>
-        <td><a href="/update/{{str(item['id'])}}">update</a></td>
-        <td><a href="/delete/{{str(item['id'])}}">delete</a></td>
+        <td><a href="/update_course/{{str(item['id'])}}">update</a></td>
+        <td><a href="/delete_course/{{str(item['id'])}}">delete</a></td>
       </tr>
     % end
     </table>

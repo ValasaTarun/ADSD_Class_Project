@@ -19,5 +19,14 @@
         <a href="/students">Students</a>
     </button>
     <br>
+    <hr>
+    <form action="/search">
+        <label for="">Search in </label>
+        <select name="type" id="">
+            <option value="Professor">Professor</option>
+            <option value="Course">Course</option>
+            <option value="Student">Student</option>
+        </select>
+    </form>
 </body>
 </html>

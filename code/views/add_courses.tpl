@@ -6,6 +6,10 @@
     <title>Add Course</title>
 </head>
 <body>
+    <h2>
+        Add Course
+    </h2>
+    <hr>
     <form action="/add_course" method="post">
         <p>Course Name : <input type="text" name="Name"></p>
         <label for="cars">Choose a Professor:</label>

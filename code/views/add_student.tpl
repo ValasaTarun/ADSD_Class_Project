@@ -6,6 +6,8 @@
     <title>Add Student</title>
 </head>
 <body>
+    <h2> Add Student </h2>
+     <hr>
     <form action="/add_student" method="post">
         <p>Student Name : <input type="text" name="Name"></p>
         <label >Choose a Course:</label>

@@ -88,19 +88,27 @@ def delete_student(id):
     connection.commit()
 
 def master_join(search_string , type_):
-    if 'p' or 'P' in type_:
+    print(search_string,type_)
+    result_from = ''
+    if 'P' in type_:
         cursor = connection.cursor()
-        statement = f"select C.Name as Course_Name ,P.Name as Professor_Name ,P.Class_Time,C.Code ,S.Name as Student_Name,S.id as Student_id from courses C inner join Professors P on P.id = C.Taught_by inner join Students S on C.id = S.Course_Enrolled where P.id in (select id from Professors where Name like '%{search_string}%')"
+        statement = f"select C.Name as Course_Name ,P.Name as Professor_Name ,P.Class_Time,C.Information ,S.Name as Student_Name,S.id as Student_id from courses C inner join Professors P on P.id = C.Taught_by inner join Students S on C.id = S.Course_Enrolled where P.id in (select id from Professors where Name like '%{search_string}%')"
         rows = cursor.execute(statement)
-    if 's' or 'S' in type_:
+        result_from = 'Professor'
+    if 'S' in type_:
         cursor = connection.cursor()
-        statement = f"select C.Name as Course_Name ,P.Name as Professor_Name ,P.Class_Time,C.Code ,S.Name as Student_Name,S.id as Student_id from courses C inner join Professors P on P.id = C.Taught_by inner join Students S on C.id = S.Course_Enrolled where S.id in (select id from students where Name like '%{search_string}%')"
+        statement = f"select C.Name as Course_Name ,P.Name as Professor_Name ,P.Class_Time,C.Information ,S.Name as Student_Name,S.id as Student_id from courses C inner join Professors P on P.id = C.Taught_by inner join Students S on C.id = S.Course_Enrolled where S.id in (select id from students where Name like '%{search_string}%')"
         rows = cursor.execute(statement)
-    if 'c' or 'C' in type_:
+        result_from = 'Student'
+
+    if 'C' in type_:
         cursor = connection.cursor()
-        statement = f"select C.Name as Course_Name ,P.Name as Professor_Name ,P.Class_Time,C.Code ,S.Name as Student_Name,S.id as Student_id from courses C inner join Professors P on P.id = C.Taught_by inner join Students S on C.id = S.Course_Enrolled where C.id in (select id from courses where Name like '%{search_string}%')"
+        statement = f"select C.Name as Course_Name ,P.Name as Professor_Name ,P.Class_Time,C.Information ,S.Name as Student_Name,S.id as Student_id from courses C inner join Professors P on P.id = C.Taught_by inner join Students S on C.id = S.Course_Enrolled where C.id in (select id from courses where Name like '%{search_string}%')"
         rows = cursor.execute(statement)
+        result_from = 'Course'
+
+    print('results from :',result_from)
     rows = list(rows)
-    rows = [ {'Course_Name' : row[0], 'Professor Name': row[1],'Class Timings': row[2],'Student_Name':row[3]} for row in rows ]
+    rows = [ {'Course_Name' : row[0], 'Professor Name': row[1],'Class Timings': row[2],'Info':row[3],'Student_Name':row[4] } for row in rows ]
     return rows
      

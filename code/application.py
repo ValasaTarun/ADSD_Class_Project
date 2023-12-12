@@ -130,7 +130,8 @@ def delete_student(id):
 def search():
     search_string = request.forms.get("value")
     type_ = request.forms.get("type")
-    database.master_join(search_string,type_)
+    result = database.master_join(search_string,type_)
+    return template("result.tpl",results = result)
 
 run(host='localhost', port=8080)
 

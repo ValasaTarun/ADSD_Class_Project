@@ -25,13 +25,14 @@
         <form action="/search" method="post">
             <label for="">Search : </label>
             <input type="text" name="value" id="" required>
-            <br>
+            <br><br>
             <label for="">Search in </label>
             <select name="type" id="">
                 <option value="Professor">Professor</option>
                 <option value="Course">Course</option>
                 <option value="Student">Student</option>
             </select>
+            <br><br>
             <p>
                 <button type="submit">Submit</button>
             </p>

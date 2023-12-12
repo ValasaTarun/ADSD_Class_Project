@@ -1,7 +1,7 @@
--- To run this project , run these commands
-pip install bottle
-pip install sqlite3
---navigate into code/ folder
-python setup.py
-python application.py
+-- To run this project , run these commands <br />
+pip install bottle <br />
+pip install sqlite3 <br />
+--navigate into code/ folder <br />
+python setup.py <br />
+python application.py <br />
 --That's it

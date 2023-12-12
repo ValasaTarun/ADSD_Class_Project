@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Course Details</title>
+    <title>Update Student Details</title>
 </head>
 <body>
     <h2>
-        Update Course
+        Update Student
     </h2>
     <hr>
     <form action="/student/update" method="post">

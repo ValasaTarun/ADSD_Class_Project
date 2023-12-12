@@ -6,6 +6,10 @@
     <title>Update Course Details</title>
 </head>
 <body>
+<h2>
+        Update Course
+    </h2>
+    <hr>
     <form action="/course/update" method="post">
         <input type="hidden" name="id" value="{{str(item['id'])}}"/>
         <p>Name : <input name="Name" value="{{item['Course Name']}}"/></p>

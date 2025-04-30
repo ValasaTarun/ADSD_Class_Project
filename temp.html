@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Circle Packing: Store Chain and Occupation</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9f9f9;
+      text-align: center;
+    }
+    .tooltip {
+      position: absolute;
+      background-color: #333;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Circle Packing: Store Chain → Occupation</h2>
+  <svg width="960" height="800"></svg>
+  <div class="tooltip"></div>
+
+  <script>
+    const data = {"name": "Total", "children": [{"name": "Major A", "children": [{"name": "Clerical", "value": 15}, {"name": "Farm", "value": 3}, {"name": "Laborer", "value": 14}, {"name": "Military", "value": 3}, {"name": "Other", "value": 367}, {"name": "Professional", "value": 39}, {"name": "Sales", "value": 54}, {"name": "Service", "value": 6}, {"name": "Student", "value": 30}, {"name": "Technical", "value": 57}, {"name": "Retired", "value": 224}]}, {"name": "Major B", "children": [{"name": "Clerical", "value": 26}, {"name": "Farm", "value": 5}, {"name": "Laborer", "value": 6}, {"name": "Military", "value": 14}, {"name": "Other", "value": 314}, {"name": "Professional", "value": 21}, {"name": "Sales", "value": 60}, {"name": "Service", "value": 8}, {"name": "Student", "value": 20}, {"name": "Technical", "value": 51}, {"name": "Retired", "value": 205}]}, {"name": "Major D", "children": [{"name": "Clerical", "value": 5}, {"name": "Farm", "value": 1}, {"name": "Laborer", "value": 8}, {"name": "Military", "value": 4}, {"name": "Other", "value": 213}, {"name": "Professional", "value": 21}, {"name": "Sales", "value": 32}, {"name": "Service", "value": 3}, {"name": "Student", "value": 9}, {"name": "Technical", "value": 31}, {"name": "Retired", "value": 122}]}, {"name": "Major E", "children": [{"name": "Clerical", "value": 14}, {"name": "Laborer", "value": 7}, {"name": "Other", "value": 191}, {"name": "Professional", "value": 14}, {"name": "Sales", "value": 25}, {"name": "Service", "value": 2}, {"name": "Student", "value": 10}, {"name": "Technical", "value": 30}, {"name": "Retired", "value": 122}]}, {"name": "Minor B", "children": [{"name": "Clerical", "value": 1}, {"name": "Laborer", "value": 2}, {"name": "Military", "value": 1}, {"name": "Other", "value": 37}, {"name": "Professional", "value": 1}, {"name": "Sales", "value": 2}, {"name": "Service", "value": 1}, {"name": "Technical", "value": 3}, {"name": "Retired", "value": 17}]}, {"name": "Minor D", "children": [{"name": "Clerical", "value": 2}, {"name": "Farm", "value": 1}, {"name": "Military", "value": 7}, {"name": "Other", "value": 45}, {"name": "Professional", "value": 1}, {"name": "Technical", "value": 1}, {"name": "Retired", "value": 11}]}, {"name": "Minor E", "children": [{"name": "Clerical", "value": 8}, {"name": "Farm", "value": 1}, {"name": "Laborer", "value": 2}, {"name": "Military", "value": 3}, {"name": "Other", "value": 140}, {"name": "Professional", "value": 7}, {"name": "Sales", "value": 14}, {"name": "Service", "value": 2}, {"name": "Student", "value": 2}, {"name": "Technical", "value": 15}, {"name": "Retired", "value": 71}]}, {"name": "Minor G", "children": [{"name": "Clerical", "value": 7}, {"name": "Farm", "value": 2}, {"name": "Laborer", "value": 1}, {"name": "Military", "value": 11}, {"name": "Other", "value": 83}, {"name": "Professional", "value": 6}, {"name": "Sales", "value": 10}, {"name": "Service", "value": 1}, {"name": "Student", "value": 7}, {"name": "Technical", "value": 13}, {"name": "Retired", "value": 48}]}]}
+;
+
+    const width = 960;
+    const height = 800;
+
+    const svg = d3.select("svg")
+      .attr("viewBox", [0, 0, width, height]);
+
+    const tooltip = d3.select(".tooltip");
+
+    const pack = data => d3.pack()
+      .size([width - 2, height - 2])
+      .padding(3)(
+        d3.hierarchy(data)
+          .sum(d => d.value)
+          .sort((a, b) => b.value - a.value)
+      );
+
+    const root = pack(data);
+
+    const node = svg.selectAll("g")
+      .data(root.descendants())
+      .join("g")
+        .attr("transform", d => `translate(${d.x},${d.y})`);
+
+    node.append("circle")
+        .attr("r", d => d.r)
+        .attr("fill", d => d.children ? "#69b3a2" : "#407294")
+        .attr("stroke", "#000")
+        .on("mouseover", function(event, d) {
+          tooltip.style("opacity", 1)
+                 .html(`<strong>${d.data.name}</strong><br>Count: ${d.value}`)
+                 .style("left", (event.pageX + 10) + "px")
+                 .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", () => tooltip.style("opacity", 0));
+
+    node.filter(d => d.depth === 1).append("text")
+  .attr("y", d => -d.r + 12)
+  .text(d => d.data.name.length > 10 ? d.data.name.slice(0, 10) + '…' : d.data.name)
+  .style("font-size", "11px")
+  .style("text-anchor", "middle")
+  .style("fill", "#000");
+
+    node.filter(d => !d.children).append("text")
+        .attr("dy", "0.3em")
+        .text(d => d.r > 10 ? d.data.name : "")
+        .style("font-size", "10px")
+        .style("text-anchor", "middle")
+        .style("fill", "#fff");
+  </script>
+
+</body>
+</html>
